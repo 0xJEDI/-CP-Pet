@@ -1,8 +1,8 @@
 # -CP-Pet
 
-Index.HTML -
+Index.HTML - Portal
 ![Portal Page](pngs/index.png)
 
 
-GAME.HTML -
+GAME.HTML - Game
 ![Game Page](pngs/game.jpg)
