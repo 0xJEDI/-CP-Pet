@@ -1,4 +1,4 @@
-# -CP-Pet
+# -CP_Pet-
 
 CyberPet Ver: 1x00
 
