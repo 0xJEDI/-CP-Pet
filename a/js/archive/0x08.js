@@ -1,65 +1,59 @@
-/* VERSION 1.00 */
-
 document.addEventListener('DOMContentLoaded', function() {
     setupForm();
 });
 
-/* SETUP */
-// NAME CHECKER - CHECKS STRING
-// SETUP FORM - SETS SUMBIT AND PET INFO
-// SETS IMAGE - DOG OR CAT
-// DECLARES BUTTONS
-
-function nameChecker() {
-    const name = document.getElementById('petName').value;
-    const regex = /^[a-zA-Z]+$/;
-    return regex.test(name) ? true : false;
-}
-
 function setupForm() {
     const submitButton = document.getElementById('submitButton');
-    submitButton.addEventListener('click', function() {
-        const isValid = nameChecker();
-
-        if (isValid) {
-            // INPUT TYPES
-            const name = document.getElementById('petName').value;
-            const animal = document.getElementById('petType').value;
-            document.getElementById('imgPet').setAttribute('src', `a/img/type/${animal.toLowerCase()}.png`);
-
-            // ANIMAL VAR 
-            if (animal === "Dog") {petAnimal = "Dog";} else {petAnimal = "Cat";}
-
-            // DISABLE
-            sbtButtons();
-
-            // FUNCTIONS
-            updateButtons();
-            updateStatDisplays();
-            startTimeLoop();
-        } else {
-            document.getElementById('cmdTXT').innerHTML = `Please fill out all fields`;
-        }
-    });
+    submitButton.addEventListener('click', displayPetDetails);
 }
 
-function updateButtons() {
+function displayPetDetails() {
+    const petName = document.getElementById('petName').value;
+    const petType = document.getElementById('petType').value;
+
+    document.getElementById('name').innerHTML = `NAME: ${petName}`;
+    document.getElementById('type').innerHTML = `TYPE: ${petType}`;
+
+    if (petName === "") {
+        document.getElementById('cmdTXT').innerHTML = `Please fill out all fields`;
+        return;
+    } else {
+        document.getElementById('imgPet').setAttribute('src', `a/img/type/${petType.toLowerCase()}.png`);
+    }
+
+    if (petType === "Dog"){
+        petAnimal = "Dog";
+    } else {
+        petAnimal = "Cat";
+    }
+
+    const submitButton = document.getElementById('submitButton');
+    const petNameInput = document.getElementById('petName');
+    const petTypeInput = document.getElementById('petType');
+    submitButton.disabled = true;
+    petNameInput.disabled = true;
+    petTypeInput.disabled = true;
+    startPetGame();
+}
+
+let stats = {
+    happiness: 100,
+    thirst: 100,
+    cleaniness: 100,
+    hunger: 100
+};
+let maxStatValue = 100;
+
+function startPetGame() {
+    updateStatDisplays();
+    startTimeLoop();
+    document.getElementById('cmdTXT').innerHTML = '[PET] YOUR GAME HAS STARTED GOOD LUCK!!';
+
     document.getElementById('btnPlay').addEventListener('click', btnClickPlay);
     document.getElementById('btnDrink').addEventListener('click', btnClickDrink);
     document.getElementById('btnClean').addEventListener('click', btnClickClean);
     document.getElementById('btnFeed').addEventListener('click', btnClickFeed);
 }
-
-/* VARS + DISPLAY  + STATS(LOOP) + DEATH CHECK + ENDGAME*/
-// UPDATE STATS + STATS
-// TIME INTERVAL
-// CHANGE PET IMAGE
-// CHECK DEATH
-// END GAME
-
-let stats = {happiness: 36,thirst: 85,cleaniness: 85,hunger: 85}
-let maxStatValue = 85;
-let interval;
 
 function updateStatDisplays() {
     document.getElementById('stHappiness').innerHTML = `Happiness: ${stats.happiness}`;
@@ -68,34 +62,16 @@ function updateStatDisplays() {
     document.getElementById('stHunger').innerHTML = `Hunger: ${stats.hunger}`;
 }
 
-function startTimeLoop() {
-    let gameOver = false;
-
-    interval = setInterval(function() {
-        updateStatDisplays();
-        changePetImage();
-        animalDeathChecker();
-
-        const random = Math.floor(Math.random() * 2) + 1;
-
-        stats.happiness = Math.max(stats.happiness - random, 0);
-        stats.thirst = Math.max(stats.thirst - random, 0);
-        stats.cleaniness = Math.max(stats.cleaniness - random, 0);
-        stats.hunger = Math.max(stats.hunger - random, 0);
-    }, 3000);
-}
-
 function changePetImage() {
     if (petAnimal === "Dog") {
-        if (stats.happiness < 35 || stats.thirst < 35 || stats.cleaniness < 35 || stats.hunger < 35) {
+        if (stats.happiness < 30 || stats.thirst < 30 || stats.cleaniness < 30 || stats.hunger < 30) {
             document.getElementById('imgPet').setAttribute('src', 'a/img/type/sad_dog.png');
             document.getElementById('cmdTXT').innerHTML = '[PET] Your Pet is feeling quite down!';
-            message();
         } else {
             document.getElementById('imgPet').setAttribute('src', 'a/img/type/dog.png');
         }
     } else {
-        if (stats.happiness < 35 || stats.thirst < 35 || stats.cleaniness < 35 || stats.hunger < 35) {
+        if (stats.happiness < 30 || stats.thirst < 30 || stats.cleaniness < 30 || stats.hunger < 30) {
             document.getElementById('imgPet').setAttribute('src', 'a/img/type/sad_cat.png');
             document.getElementById('cmdTXT').innerHTML = '[PET] Your Pet is feeling quite down!';
         } else {
@@ -104,22 +80,50 @@ function changePetImage() {
     }
 }
 
-function animalDeathChecker() {
-    if (stats.happiness <= 0 || stats.thirst <= 0 || stats.cleaniness <= 0 || stats.hunger <= 0) {
-        endGame();
-        document.getElementById('cmdTXT').innerHTML = '[PET] Your Pet has Died! :(';
-    }
-}
-
-function endGame(gameOver) {
+function endGame() {
     gameOver = true;
     clearInterval(interval);
     dbAndButtons();
-    restartBtn();
 }
 
-/* PLAY BUTTONS */
-// BUTTON FUNCTIONS (FEED, PLAY, CLEAN, DRINK)
+function animalDeathChecker() {
+    switch (true) {
+        case stats.happiness <= 0:
+            document.getElementById('cmdTXT').innerHTML = '[PET] Your Pet has Ran Away! Due to Bordem';
+            endGame();
+            break;
+        case stats.thirst <= 0:
+            document.getElementById('cmdTXT').innerHTML = '[PET] Your pet was so thirsty! It jumped in a pond of water and drown :(';
+            endGame();
+            break;
+        case stats.cleaniness <= 0:
+            document.getElementById('cmdTXT').innerHTML = '[PET] Your Pet was so Dirty, It had a New Disease called Doggocat-19!';
+            endGame();
+            break;
+        case stats.hunger <= 0:
+            document.getElementById('cmdTXT').innerHTML = '[PET] You let your pet strave, Youre a bad person!';
+            endGame();
+            break;
+        default:
+            return
+    }
+}
+
+function startTimeLoop() {
+    let interval;
+    let gameOver = false;
+
+    interval = setInterval(function() {
+        updateStatDisplays();
+        changePetImage();
+        animalDeathChecker();
+
+        stats.happiness = Math.max(stats.happiness - 1, 0);
+        stats.thirst = Math.max(stats.thirst - 2, 0);
+        stats.cleaniness = Math.max(stats.cleaniness - 1, 0);
+        stats.hunger = Math.max(stats.hunger - 2, 0);
+    }, 3000);
+}
 
 function btnClickPlay() {
     if (stats.happiness < maxStatValue) {
@@ -142,11 +146,10 @@ function btnClickDrink() {
         updateStatDisplays();
 
         if (petAnimal === "Dog") {
-            document.getElementById('cmdTXT').innerHTML = `[PET] WOOF!!!`;
+            document.getElementById('cmdTXT').innerHTML = `[PET] BARK!!!`;
         } else {
-            document.getElementById("cmdTXT").innerHTML = `[PET] MEOWWWWWW!!`;
+            document.getElementById("cmdTXT").innerHTML = `[PET] Meow!`;
         }
-
     }
 }
 
@@ -156,11 +159,10 @@ function btnClickClean() {
         updateStatDisplays();
 
         if (petAnimal === "Dog") {
-            document.getElementById('cmdTXT').innerHTML = `[PET] BARK!!!`;
+            document.getElementById('cmdTXT').innerHTML = `[PET] BARK BARK!!!`;
         } else {
-            document.getElementById("cmdTXT").innerHTML = `[PET] purrrrrrr!!`;
+            document.getElementById("cmdTXT").innerHTML = `[PET] Pur!`;
         }
-
     }
 }
 
@@ -171,25 +173,11 @@ function btnClickFeed() {
         updateStatDisplays();
 
         if (petAnimal === "Dog") {
-            document.getElementById('cmdTXT').innerHTML = `[PET] BARK!!!!`;
+            document.getElementById('cmdTXT').innerHTML = `[PET] Woof`;
         } else {
             document.getElementById("cmdTXT").innerHTML = `[PET] Meow`;
         }
     }
-}
-
-/* DISABLE USER INPUTS + RESTART BUTTON */
-// SBT - Disables Sumbit, Name, Type
-// dbAndButtons - Disables Buttons and Adds Restart Button
-// restartBTN - Restart Button
-
-function sbtButtons() {
-    const submitButton = document.getElementById('submitButton');
-    const petNameInput = document.getElementById('petName');
-    const petTypeInput = document.getElementById('petType');
-    submitButton.disabled = true;
-    petNameInput.disabled = true;
-    petTypeInput.disabled = true;
 }
 
 function dbAndButtons() {
@@ -197,6 +185,10 @@ function dbAndButtons() {
     document.getElementById("btnDrink").disabled = true;
     document.getElementById("btnClean").disabled = true;
     document.getElementById("btnFeed").disabled = true;
+
+    if (gameOver) {
+        restartBtn();
+    }
 }
 
 function restartBtn() {

@@ -1,0 +1,48 @@
+# 0x00:
+- Base Code For A Pet Game
+- On load, execute `setupForm()`
+- This Was Used To Create A Stats Display For Happiness
+- Gather Pet Name And Type
+- Set Pet Image Based On Selected Pet Type
+- Tested Event Listener By Decreasing Happiness By 5
+
+# 0x01:
+- Add Displays And Buttons For Stats (play, Clean, Drink, Hunger)
+
+# 0x02:
+- Declare variables
+- `dbSubmit(petType, petName, submitBTN)`: Disable User Input After Submit
+- `startTimeLoop()`: Loop To Remove Points From Stats (cyber Pet)
+- `endGame()`: set `gameOver` Variable And End Interval Loop
+- `updateStatDisplays()`: Update Cyber Pet Stats
+
+# 0x03:
+- `dbAndButtons()`: Disable Event Listeners
+- `restartBtn()`: Add Restart Button
+- `displayPetDetails()`: Update Image Method
+
+# 0x04:
+- Place `dbSubmit()` At Top Of Function
+- Add Comments
+- Add Event Listeners For Play, Feed, Drink, Clean
+- Buttons Produce Text To Command Line ("[PET] WOOOF!")
+- `startTimeLoop()`: Add `if` statement for death
+- Update `displayPetDetails()` and `updateStatDisplays()` Switch Statements
+- Update `dbAndButtons()` IDs
+
+# 0x05:
+- Add `petType` to `displayPetDetails()`
+- Remove Command Line Text And Add `gameOver` Variable To `endGame()`
+- `startTimeLoop()`: Update And Add Custom Death Messages
+- Declare `petanimal` Variable For Command Line Text (dog Or Cat)
+
+# 0x06:
+- Add `changePetImage()` To Change Pet Image To Sad Animal
+- Include `if` Statement In `startTimeLoop()`
+
+# 0x07:
+- `animalDeathChecker()` & `startTimeLoop()` - Cleaned Indentions
+- Cleaned Comments, Added Comments
+
+# 0x08:
+- Add `statsCustom()` - Changes Stat Minus Value on (45, 15) 
