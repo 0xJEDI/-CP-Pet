@@ -5,7 +5,6 @@ html {
 	font-family: 'Roboto', sans-serif;
 }
 
-
 #title {
 	position: absolute;
 	top: 25%;
@@ -16,7 +15,6 @@ html {
 	text-decoration: underline;
 	font-size: 50px;
 }
-
 
 /* PLACEMENTS */
 #about {top: 50%;left: 25%;}
@@ -34,7 +32,6 @@ html {
 	position: absolute;
 	transform: translate(-50%, -50%);
 }
-
 
 #about h1,#game h1,#source h1 {
 	color: white;
